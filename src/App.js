@@ -4,15 +4,9 @@ import "./App.css";
 import { InputForm } from "./InputForm.js";
 import { PlayForm } from "./PlayForm.js";
 import { LeaderBoard } from "./LeaderBoard.js";
-
-import one from "./assets/one.png";
-import two from "./assets/two.png";
-import three from "./assets/three.png";
-import four from "./assets/four.png";
-import five from "./assets/five.png";
-import six from "./assets/six.png";
-
-import { rollDice, nextPlayer, nextRound, isLastPlayer } from "./utils.js";
+import { DiceImage } from "./DiceImage.js";
+import { rollDice, nextPlayer, nextRound } from "./utils.js";
+import { isLastPlayer, determineWinner } from "./utils.js";
 
 class App extends React.Component {
   constructor(props) {
@@ -34,7 +28,6 @@ class App extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDiceChange = this.handleDiceChange.bind(this);
     this.handleContinue = this.handleContinue.bind(this);
   }
 
@@ -45,12 +38,7 @@ class App extends React.Component {
     });
   }
 
-  handleDiceChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
   handleSubmit(event) {
-    //const [newLetter] = this.state.value;
     const { name, value } = event.target;
     event.preventDefault();
     this.setState({
@@ -99,34 +87,20 @@ class App extends React.Component {
   };
 
   render() {
-    const DiceImage = ({ roll }) => {
-      if (roll === 1) {
-        return <img className="dice-image" src={one} alt="1" />;
-      } else if (roll === 2) {
-        return <img className="dice-image" src={two} alt="2" />;
-      } else if (roll === 3) {
-        return <img className="dice-image" src={three} alt="3" />;
-      } else if (roll === 4) {
-        return <img className="dice-image" src={four} alt="4" />;
-      } else if (roll === 5) {
-        return <img className="dice-image" src={five} alt="5" />;
-      } else if (roll === 6) {
-        return <img className="dice-image" src={six} alt="6" />;
-      }
-    };
     const gameStarted = this.state.gameStarted;
     const userRollDice = this.state.userRollDice;
     const userOrderDice = this.state.userOrderDice;
     const playerDiceRolls = this.state.playerDiceRolls;
     const userScores = this.state.userScores;
+    const lastPlayer = isLastPlayer(
+      this.state.currentRound,
+      this.state.currentPlayer,
+      this.state.numberOfRounds,
+      this.state.numberOfPlayers,
+      this.state.userOrderDice
+    );
+    const winner = determineWinner(userScores);
 
-    // console.log(
-    //   this.state.currentRound,
-    //   this.state.currentPlayer,
-    //   this.state.numberOfRounds,
-    //   this.state.numberOfPlayers,
-    //   isLastPlayer
-    // );
     return (
       <div className="App">
         <header className="App-header">
@@ -153,13 +127,7 @@ class App extends React.Component {
               handleChange={this.handleChange}
               handleContinue={this.handleContinue}
               resetGame={this.resetGame}
-              isLastPlayer={isLastPlayer(
-                this.state.currentRound,
-                this.state.currentPlayer,
-                this.state.numberOfRounds,
-                this.state.numberOfPlayers,
-                this.state.userOrderDice
-              )}
+              isLastPlayer={lastPlayer}
             />
           )}
         </header>
@@ -170,8 +138,9 @@ class App extends React.Component {
           {/* Show what the current player has tossed */}
           {userRollDice && (
             <p>
-              Player {this.state.currentPlayer}, you rolled {playerDiceRolls[0]}{" "}
-              & {playerDiceRolls[1]}.
+              Player {this.state.currentPlayer}, you rolled{" "}
+              {<DiceImage roll={playerDiceRolls[0]} />}++
+              {<DiceImage roll={playerDiceRolls[1]} />}
             </p>
           )}
           {/* Show the player's score after ordering of dice is selected */}
@@ -183,10 +152,11 @@ class App extends React.Component {
           )}
         </div>
         <div className="Main-body">
-          {/* Constantly show what the players' scores - facilitate debugging */}
+          {/* Constantly show the players' scores and finally the winner */}
           {gameStarted && <h4>Leaderboard 🏆</h4>}
           {gameStarted && <hr />}
           {gameStarted && <LeaderBoard userScores={userScores} />}
+          {lastPlayer && winner}
         </div>
       </div>
     );

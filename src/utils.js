@@ -26,3 +26,16 @@ export const isLastPlayer = (
   userOrderDice &&
   currentPlayer === largestPlayerNum &&
   currentRound === largestRoundNum;
+
+export const determineWinner = (userScores) => {
+  let winnerScore = userScores[0];
+  let winner = 1;
+  for (let i = 1; i < userScores.length; i++) {
+    if (userScores[i] > winnerScore) {
+      winnerScore = userScores[i];
+      winner = i + 1;
+    }
+  }
+
+  return `The winner is Player ${winner}.`;
+};

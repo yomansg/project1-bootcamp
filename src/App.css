@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.dice-image {
+  height: 8vmin;
+  pointer-events: none;
+}
+
 .App-header {
   background-color: lightcyan;
   min-height: 30vh;
