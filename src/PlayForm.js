@@ -7,8 +7,8 @@ export const PlayForm = ({
 }) => {
   return (
     <form>
-      <p>
-        <label>{"Dice Order:  "}</label>
+      <div class="inputBoxes">
+        <span class="labelClass"> Dice Order: </span>
         <input
           name="diceOrder"
           type="number"
@@ -17,15 +17,15 @@ export const PlayForm = ({
           value={diceOrder}
           onChange={handleChange}
         />
-      </p>
-      <p>
-        <button id="button" onClick={handleContinue} disabled={isLastPlayer}>
+      </div>
+      <div>
+        <button class="button" onClick={handleContinue} disabled={isLastPlayer}>
           Continue
         </button>
-        <button id="button" onClick={resetGame}>
+        <button class="button" onClick={resetGame}>
           Reset
         </button>
-      </p>
+      </div>
     </form>
   );
 };

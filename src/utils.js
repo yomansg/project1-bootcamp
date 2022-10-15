@@ -1,3 +1,5 @@
+import { Howl } from "howler";
+
 export const rollDice = () => {
   // Generate a random number between 1 and 6, both inclusive
   let diceNumber = Math.floor(Math.random() * 6) + 1;
@@ -27,7 +29,16 @@ export const isLastPlayer = (
   currentPlayer === largestPlayerNum &&
   currentRound === largestRoundNum;
 
-export const determineWinner = (userScores) => {
+export const soundPlay = (src) => {
+  const sound = new Howl({ src, html5: true });
+  sound.play();
+};
+
+export const determineWinner = (userScores, lastPlayer, audioClips) => {
+  if (!lastPlayer) return ""; // skip all code if it's Not last player
+
+  soundPlay(audioClips[1].sound); // play victory sound
+
   let winnerScore = userScores[0];
   let winner = 1;
   for (let i = 1; i < userScores.length; i++) {

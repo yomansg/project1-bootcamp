@@ -1,12 +1,25 @@
 import React from "react";
 import logo from "./logo.png";
 import "./App.css";
+import { WelcomeMsg } from "./WelcomeMsg.js";
 import { InputForm } from "./InputForm.js";
 import { PlayForm } from "./PlayForm.js";
 import { LeaderBoard } from "./LeaderBoard.js";
 import { DiceImage } from "./DiceImage.js";
 import { rollDice, nextPlayer, nextRound } from "./utils.js";
-import { isLastPlayer, determineWinner } from "./utils.js";
+import { isLastPlayer, determineWinner, soundPlay } from "./utils.js";
+
+const audioClips = [
+  {
+    sound: "http://cd.textfiles.com/itcontinues/WIN/YTB22/RATTLE2.WAV",
+    label: "Dice Shake",
+  },
+  {
+    sound:
+      "https://soundbible.com/mp3/Short_triumphal_fanfare-John_Stracke-815794903.mp3",
+    label: "Victory sound",
+  },
+];
 
 class App extends React.Component {
   constructor(props) {
@@ -51,6 +64,7 @@ class App extends React.Component {
   handleContinue(event) {
     event.preventDefault();
     if (!this.state.userRollDice) {
+      soundPlay(audioClips[0].sound); // play Dice shake
       this.setState((previousState) => ({
         currentPlayer: nextPlayer(
           previousState.currentPlayer,
@@ -99,20 +113,13 @@ class App extends React.Component {
       this.state.numberOfPlayers,
       this.state.userOrderDice
     );
-    const winner = determineWinner(userScores);
+    const winner = determineWinner(userScores, lastPlayer, audioClips);
 
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            <b>
-              Hello! Welcome to Beat That! <br />
-              Create a two-digit number by selecting the order of your dice
-              rolls. <br />
-              The player with the highest number wins! Good luck! <br />
-            </b>
-          </p>
+          <img src={logo} className="App-logo" alt="logo" /> <br />
+          <WelcomeMsg />
           {!gameStarted && (
             <InputForm
               players={this.state.numberOfPlayers}
@@ -130,6 +137,7 @@ class App extends React.Component {
               isLastPlayer={lastPlayer}
             />
           )}
+          <h2>{lastPlayer && winner}</h2>
         </header>
 
         <div className="Main-body">
@@ -156,7 +164,6 @@ class App extends React.Component {
           {gameStarted && <h4>Leaderboard 🏆</h4>}
           {gameStarted && <hr />}
           {gameStarted && <LeaderBoard userScores={userScores} />}
-          {lastPlayer && winner}
         </div>
       </div>
     );
