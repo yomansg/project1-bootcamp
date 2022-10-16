@@ -26,12 +26,20 @@
 
 .Main-body {
   background-color: #050e22;
-  min-height: 30vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: calc(9px + 2vmin);
   color: rgb(247, 245, 151);
+}
+
+.height-auto {
+  height: auto;
+  min-height: 20vh;
+}
+
+.height-fixed {
+  min-height: 38vh;
 }
 
 .button {
@@ -42,20 +50,35 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: calc(5px + 1.5vmin);
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 12px;
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .inputBoxes {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
 }
 
 .labelClass {
   float: left;
   width: 150px;
+  margin: 4px 2px;
+}
+
+.boxClass {
+  border-radius: 6px;
+  margin: 4px 2px;
+}
+
+input[type="radio"] {
+  margin: 0 10px 0 10px;
 }
 
 h2 {

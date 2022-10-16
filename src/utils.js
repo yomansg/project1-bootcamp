@@ -29,6 +29,10 @@ export const isLastPlayer = (
   currentPlayer === largestPlayerNum &&
   currentRound === largestRoundNum;
 
+// export const timeOut = (delay) => {
+//   return new Promise((res) => setTimeout(res, delay));
+// };
+
 export const soundPlay = (src) => {
   const sound = new Howl({ src, html5: true });
   sound.play();

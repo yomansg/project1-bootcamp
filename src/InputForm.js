@@ -1,9 +1,10 @@
 export const InputForm = ({ players, rounds, handleChange, handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <div class="inputBoxes">
-        <span class="labelClass">Number of Players:</span>
+      <div className="inputBoxes">
+        <label className="labelClass">Number of Players:</label>
         <input
+          className="boxClass"
           name="numberOfPlayers"
           type="number"
           min="2"
@@ -11,8 +12,9 @@ export const InputForm = ({ players, rounds, handleChange, handleSubmit }) => {
           value={players}
           onChange={handleChange}
         />
-        <span class="labelClass">Number of Rounds:</span>
+        <label className="labelClass">Number of Rounds:</label>
         <input
+          className="boxClass"
           name="numberOfRounds"
           type="number"
           min="2"
@@ -21,7 +23,7 @@ export const InputForm = ({ players, rounds, handleChange, handleSubmit }) => {
           onChange={handleChange}
         />
       </div>
-      <input class="button" type="submit" value="Submit" />
+      <input className="button" type="submit" value="Submit" />
     </form>
   );
 };

@@ -140,7 +140,7 @@ class App extends React.Component {
           <h2>{lastPlayer && winner}</h2>
         </header>
 
-        <div className="Main-body">
+        <div className="Main-body height-auto">
           {/* Prompt user to click Continue button after Submit button is clicked*/}
           {gameStarted && <p>Click [Continue] button...</p>}
           {/* Show what the current player has tossed */}
@@ -159,7 +159,7 @@ class App extends React.Component {
             </p>
           )}
         </div>
-        <div className="Main-body">
+        <div className="Main-body height-fixed">
           {/* Constantly show the players' scores and finally the winner */}
           {gameStarted && <h4>Leaderboard 🏆</h4>}
           {gameStarted && <hr />}

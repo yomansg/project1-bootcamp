@@ -7,22 +7,23 @@ export const PlayForm = ({
 }) => {
   return (
     <form>
-      <div class="inputBoxes">
-        <span class="labelClass"> Dice Order: </span>
-        <input
-          name="diceOrder"
-          type="number"
-          min="1"
-          max="2"
-          value={diceOrder}
-          onChange={handleChange}
-        />
+      <div className="inputBoxes">
+        <label className="labelClass"> Dice Order: </label>
+        <div onChange={handleChange}>
+          <input type="radio" value="1" name="diceOrder" defaultChecked />1
+          <input type="radio" value="2" name="diceOrder" />2
+        </div>
+        <br />
       </div>
       <div>
-        <button class="button" onClick={handleContinue} disabled={isLastPlayer}>
+        <button
+          className="button"
+          onClick={handleContinue}
+          disabled={isLastPlayer}
+        >
           Continue
         </button>
-        <button class="button" onClick={resetGame}>
+        <button className="button" onClick={resetGame}>
           Reset
         </button>
       </div>
