@@ -1,4 +1,4 @@
-export const WelcomeMsg = () => {
+export const WelcomeMsg = ({ audioClips }) => {
   return (
     <p>
       <b>

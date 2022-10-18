@@ -2,6 +2,7 @@ import React from "react";
 import logo from "./logo.png";
 import "./App.css";
 import { WelcomeMsg } from "./WelcomeMsg.js";
+import { Instruction } from "./Instruction.js";
 import { InputForm } from "./InputForm.js";
 import { PlayForm } from "./PlayForm.js";
 import { LeaderBoard } from "./LeaderBoard.js";
@@ -18,6 +19,11 @@ const audioClips = [
     sound:
       "https://soundbible.com/mp3/Short_triumphal_fanfare-John_Stracke-815794903.mp3",
     label: "Victory sound",
+  },
+  {
+    sound:
+      "https://soundbible.com/mp3/jack_in_the_box-Mike_Koenig-710345321.mp3",
+    label: "Game music",
   },
 ];
 
@@ -54,6 +60,8 @@ class App extends React.Component {
   handleSubmit(event) {
     const { name, value } = event.target;
     event.preventDefault();
+    soundPlay(audioClips[2].sound, true, 0.2); // play background music - softer
+
     this.setState({
       [name]: value,
       userScores: Array(this.state.numberOfPlayers).fill(0),
@@ -64,7 +72,7 @@ class App extends React.Component {
   handleContinue(event) {
     event.preventDefault();
     if (!this.state.userRollDice) {
-      soundPlay(audioClips[0].sound); // play Dice shake
+      soundPlay(audioClips[0].sound, false, 1); // play Dice shake - louder
       this.setState((previousState) => ({
         currentPlayer: nextPlayer(
           previousState.currentPlayer,
@@ -142,12 +150,12 @@ class App extends React.Component {
 
         <div className="Main-body height-auto">
           {/* Prompt user to click Continue button after Submit button is clicked*/}
-          {gameStarted && <p>Click [Continue] button...</p>}
+          {gameStarted && <Instruction userRollDice={userRollDice} />}
           {/* Show what the current player has tossed */}
           {userRollDice && (
             <p>
               Player {this.state.currentPlayer}, you rolled{" "}
-              {<DiceImage roll={playerDiceRolls[0]} />}++
+              {<DiceImage roll={playerDiceRolls[0]} />}..
               {<DiceImage roll={playerDiceRolls[1]} />}
             </p>
           )}

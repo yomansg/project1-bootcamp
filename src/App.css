@@ -8,9 +8,38 @@
   border-radius: 12px;
 }
 
+.animated-gif {
+  opacity: 0;
+  width: auto;
+  height: 12vmin;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  animation: opacityOn 1s normal forwards step-end;
+}
+@keyframes opacityOn {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .dice-image {
+  opacity: 0;
   height: 8vmin;
   pointer-events: none;
+  animation: opacityOff 0.5s normal forwards step-end;
+  animation-delay: 0.5s;
+}
+@keyframes opacityOff {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .App-header {
