@@ -10,6 +10,7 @@ import { DiceImage } from "./DiceImage.js";
 import { rollDice, nextPlayer, nextRound } from "./utils.js";
 import { isLastPlayer, determineWinner, soundPlay } from "./utils.js";
 
+// define the audio clips used in this APP
 const audioClips = [
   {
     sound: "http://cd.textfiles.com/itcontinues/WIN/YTB22/RATTLE2.WAV",
@@ -128,6 +129,7 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" /> <br />
           <WelcomeMsg />
+          {/* Render the InputForm to enable user input number of players and rounds */}
           {!gameStarted && (
             <InputForm
               players={this.state.numberOfPlayers}
@@ -136,6 +138,7 @@ class App extends React.Component {
               handleSubmit={this.handleSubmit}
             />
           )}
+          {/* Render the PlayForm to handle main logic */}
           {gameStarted && (
             <PlayForm
               diceOrder={this.state.diceOrder}
@@ -145,11 +148,12 @@ class App extends React.Component {
               isLastPlayer={lastPlayer}
             />
           )}
+          {/* Show the winner after last player has finished his turn */}
           <h2>{lastPlayer && winner}</h2>
         </header>
 
         <div className="Main-body height-auto">
-          {/* Prompt user to click Continue button after Submit button is clicked*/}
+          {/* After Submit button, app prompts user to click Continue button OR show animated dice*/}
           {gameStarted && <Instruction userRollDice={userRollDice} />}
           {/* Show what the current player has tossed */}
           {userRollDice && (
@@ -168,7 +172,7 @@ class App extends React.Component {
           )}
         </div>
         <div className="Main-body height-fixed">
-          {/* Constantly show the players' scores and finally the winner */}
+          {/* Constantly show the players' scores on a scoreboard*/}
           {gameStarted && <h4>Leaderboard 🏆</h4>}
           {gameStarted && <hr />}
           {gameStarted && <LeaderBoard userScores={userScores} />}
