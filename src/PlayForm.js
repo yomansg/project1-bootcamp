@@ -3,8 +3,11 @@ export const PlayForm = ({
   handleChange,
   handleContinue,
   resetGame,
+  toggleMusic,
   isLastPlayer,
+  isMusicOn,
 }) => {
+  const captionMusic = isMusicOn ? "Music OFF" : "Music ON";
   return (
     <form>
       <div className="inputBoxes">
@@ -25,6 +28,9 @@ export const PlayForm = ({
         </button>
         <button className="button" onClick={resetGame}>
           Reset
+        </button>
+        <button className="button" onClick={toggleMusic}>
+          {captionMusic}
         </button>
       </div>
     </form>

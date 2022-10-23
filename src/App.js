@@ -44,6 +44,8 @@ class App extends React.Component {
       playerDiceRolls: [0, 0],
       currentPlayerScore: 0,
       diceOrder: 1,
+      audio: new Audio(audioClips[2].sound), // set background music
+      isMusicOn: false, // background music is initially OFF
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -61,13 +63,15 @@ class App extends React.Component {
   handleSubmit(event) {
     const { name, value } = event.target;
     event.preventDefault();
-    soundPlay(audioClips[2].sound, true, 0.2); // play background music - softer
+    this.state.audio.play(); // start playing background music
+    this.state.audio.loop = true;
 
-    this.setState({
+    this.setState((previousState) => ({
       [name]: value,
       userScores: Array(this.state.numberOfPlayers).fill(0),
       gameStarted: true,
-    });
+      isMusicOn: true,
+    }));
   }
 
   handleContinue(event) {
@@ -109,6 +113,19 @@ class App extends React.Component {
     });
   };
 
+  toggleMusic = (event) => {
+    event.preventDefault();
+    let isMusicOn = this.state.isMusicOn;
+    if (isMusicOn) {
+      this.state.audio.pause(); // Pause music if it is playing
+    } else {
+      this.state.audio.play(); // Play music if it is paused
+    }
+    this.setState((previousState) => ({
+      isMusicOn: !previousState.isMusicOn,
+    }));
+  };
+
   render() {
     const gameStarted = this.state.gameStarted;
     const userRollDice = this.state.userRollDice;
@@ -145,7 +162,9 @@ class App extends React.Component {
               handleChange={this.handleChange}
               handleContinue={this.handleContinue}
               resetGame={this.resetGame}
+              toggleMusic={this.toggleMusic}
               isLastPlayer={lastPlayer}
+              isMusicOn={this.state.isMusicOn}
             />
           )}
           {/* Show the winner after last player has finished his turn */}
