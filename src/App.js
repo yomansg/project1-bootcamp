@@ -10,7 +10,6 @@ import { DiceImage } from "./DiceImage.js";
 import { rollDice, nextPlayer, nextRound } from "./utils.js";
 import { isLastPlayer, determineWinner, soundPlay } from "./utils.js";
 
-// define the audio clips used in this APP
 const audioClips = [
   {
     sound: "http://cd.textfiles.com/itcontinues/WIN/YTB22/RATTLE2.WAV",
@@ -28,25 +27,26 @@ const audioClips = [
   },
 ];
 
+const defaultState = {
+  gameStarted: false,
+  numberOfPlayers: 2,
+  numberOfRounds: 3,
+  userRollDice: false,
+  userOrderDice: false,
+  userScores: [],
+  currentPlayer: 0,
+  currentRound: 0,
+  playerDiceRolls: [0, 0],
+  currentPlayerScore: 0,
+  diceOrder: 1,
+  audio: new Audio(audioClips[2].sound),
+  isMusicOn: false,
+};
+
 class App extends React.Component {
   constructor(props) {
-    // Always call super with props in constructor to initialise parent class
     super(props);
-    this.state = {
-      gameStarted: false,
-      numberOfPlayers: 2, // form input state
-      numberOfRounds: 3,
-      userRollDice: false,
-      userOrderDice: false,
-      userScores: [],
-      currentPlayer: 0,
-      currentRound: 0,
-      playerDiceRolls: [0, 0],
-      currentPlayerScore: 0,
-      diceOrder: 1,
-      audio: new Audio(audioClips[2].sound), // set background music
-      isMusicOn: false, // background music is initially OFF
-    };
+    this.state = defaultState;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,8 +63,9 @@ class App extends React.Component {
   handleSubmit(event) {
     const { name, value } = event.target;
     event.preventDefault();
-    this.state.audio.play(); // start playing background music
-    this.state.audio.loop = true;
+    const audio = this.state.audio;
+    audio.play();
+    audio.loop = true;
 
     this.setState((previousState) => ({
       [name]: value,
@@ -92,11 +93,11 @@ class App extends React.Component {
         this.state.diceOrder === 1
           ? this.state.playerDiceRolls[0] * 10 + this.state.playerDiceRolls[1]
           : this.state.playerDiceRolls[1] * 10 + this.state.playerDiceRolls[0];
-      const newScores = this.state.userScores.slice(); //copy the array
+      const newScores = [...this.state.userScores]; //copy the array
       newScores[this.state.currentPlayer - 1] += userScore; //add new score to copied array location
       this.setState((previousState) => ({
-        userScore: userScore, // current player score
-        userScores: newScores, // store player score in array
+        userScore: userScore,
+        userScores: newScores,
         currentRound: nextRound(
           previousState.currentRound,
           previousState.currentPlayer
@@ -108,36 +109,26 @@ class App extends React.Component {
   }
 
   resetGame = () => {
-    this.setState({
-      // Reset the whole game to let user play again
-    });
+    this.setState(defaultState);
   };
 
   toggleMusic = (event) => {
     event.preventDefault();
-    let isMusicOn = this.state.isMusicOn;
-    if (isMusicOn) {
-      this.state.audio.pause(); // Pause music if it is playing
-    } else {
-      this.state.audio.play(); // Play music if it is paused
-    }
+    this.state.isMusicOn ? this.state.audio.pause() : this.state.audio.play();
     this.setState((previousState) => ({
       isMusicOn: !previousState.isMusicOn,
     }));
   };
 
   render() {
-    const gameStarted = this.state.gameStarted;
-    const userRollDice = this.state.userRollDice;
-    const userOrderDice = this.state.userOrderDice;
-    const playerDiceRolls = this.state.playerDiceRolls;
-    const userScores = this.state.userScores;
+    const { gameStarted, userRollDice, userOrderDice } = this.state;
+    const { playerDiceRolls, userScores } = this.state;
     const lastPlayer = isLastPlayer(
       this.state.currentRound,
       this.state.currentPlayer,
       this.state.numberOfRounds,
       this.state.numberOfPlayers,
-      this.state.userOrderDice
+      userOrderDice
     );
     const winner = determineWinner(userScores, lastPlayer, audioClips);
 
@@ -191,10 +182,14 @@ class App extends React.Component {
           )}
         </div>
         <div className="Main-body height-fixed">
-          {/* Constantly show the players' scores on a scoreboard*/}
-          {gameStarted && <h4>Leaderboard 🏆</h4>}
-          {gameStarted && <hr />}
-          {gameStarted && <LeaderBoard userScores={userScores} />}
+          {gameStarted && (
+            <div>
+              {/* Constantly show the players' scores on a scoreboard*/}
+              <h4>Leaderboard 🏆</h4>
+              <hr />
+              <LeaderBoard userScores={userScores} />
+            </div>
+          )}
         </div>
       </div>
     );

@@ -8,7 +8,7 @@ export const Instruction = ({ userRollDice }) => {
         className="animated-gif"
       />
     );
-  } else {
-    return <p>Click [Continue] button...</p>;
   }
+
+  return <p>Click [Continue] button...</p>;
 };

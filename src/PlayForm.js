@@ -7,7 +7,7 @@ export const PlayForm = ({
   isLastPlayer,
   isMusicOn,
 }) => {
-  const captionMusic = isMusicOn ? "Music OFF" : "Music ON";
+  const musicCaption = isMusicOn ? "Music OFF" : "Music ON";
   return (
     <form>
       <div className="inputBoxes">
@@ -30,7 +30,7 @@ export const PlayForm = ({
           Reset
         </button>
         <button className="button" onClick={toggleMusic}>
-          {captionMusic}
+          {musicCaption}
         </button>
       </div>
     </form>
